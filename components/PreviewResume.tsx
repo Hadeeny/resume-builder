@@ -4,7 +4,6 @@ import { templates } from "../templates";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { Info } from "../features/userInfoSlice";
 import { useReactToPrint } from "react-to-print";
 import { ResumePreviewProps } from "../types";
 
