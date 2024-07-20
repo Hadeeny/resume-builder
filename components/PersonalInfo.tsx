@@ -7,9 +7,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
-import { getPersonalInfo, Info } from "../features/userInfoSlice";
+import { getPersonalInfo } from "../features/userInfoSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { Info } from "../types";
 
 const PersonalInfo = ({ id }: { id: number }) => {
   const { storeInfo } = useSelector((state: RootState) => state.userInfo);
