@@ -1,31 +1,32 @@
-'use client'
-import {useRef} from 'react'
-import { Info } from "../features/userInfoSlice";
-import { SkillType, eduType, ExperienceType } from "../components/Experience";
+"use client";
 import SkillLevel from "@/components/SkillLevel";
+import { TemplateProps } from "@/types";
 
-interface Prop {
-  personalInfo: Info;
-  experience: ExperienceType[];
-  skill: SkillType[];
-  education: eduType[];
-  summary: string;
-  refs: any
-}
 const Template1 = ({
   personalInfo,
   experience,
   summary,
   skill,
   education,
-  refs
-}: Prop) => {
-    
-  const { firstName, lastName, website, github, title, email, address, phone, linkedin } =
-    personalInfo;
-    const componentRef= refs
+  refs,
+}: TemplateProps) => {
+  const {
+    firstName,
+    lastName,
+    website,
+    github,
+    title,
+    email,
+    address,
+    phone,
+    linkedin,
+  } = personalInfo;
+  const componentRef = refs;
   return (
-    <div ref={componentRef} className="w-full text-[12px] leading-[14px] p-6  border border-b-transparent mx-auto flex flex-col">
+    <div
+      ref={componentRef}
+      className="w-full text-[12px] leading-[14px] p-6  border border-b-transparent mx-auto flex flex-col"
+    >
       {/* Title starts */}
       <div id="title">
         <h1 className="text-3xl font-semibold">
@@ -45,7 +46,7 @@ const Template1 = ({
             Email : <span>{email}</span>
           </h3>
           {github && (
-              <h3>
+            <h3>
               Github : <span>{github}</span>
             </h3>
           )}
@@ -58,7 +59,7 @@ const Template1 = ({
             Linkedin : <span>{linkedin}</span>
           </h3>
           {website && (
-              <h3>
+            <h3>
               Phone : <span>{website}</span>
             </h3>
           )}
@@ -68,7 +69,7 @@ const Template1 = ({
 
       {/* Professional Summary */}
       <div className="mb-4">
-        <p className=''>{summary}</p>
+        <p className="">{summary}</p>
       </div>
       {/* Professional summary ends */}
 
@@ -93,9 +94,13 @@ const Template1 = ({
                   <h3 className="text-md text-black/90 font-bold">
                     {exp.company}
                   </h3>
-                  <ul className="my-2 ">{exp.description?.split('\n').map((li, index)=>(
-                      <li className='list-disc' key={index}>{li}</li>
-                  ))}</ul>
+                  <ul className="my-2 ">
+                    {exp.description?.split("\n").map((li, index) => (
+                      <li className="list-disc" key={index}>
+                        {li}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </li>
             </div>
@@ -139,23 +144,23 @@ const Template1 = ({
       {/* Skills starts */}
       <h2 className="font-semibold text-black/90">Skills</h2>
       <div className="border-t py-2 border-gray-300">
-        <div className='flex justify-between'>
-          <div className='w-2/12'></div>
+        <div className="flex justify-between">
+          <div className="w-2/12"></div>
           <ul className="w-9/12 space-y-0">
-          {/* Skills 1 starts */}
-          {skill.map((skillset, i) => (
-            // <div key={i}>
-            <li className="flex justify-between">
-            <h4>{skillset.skill}</h4>{" "}
-            <div className="flex w-32 items-center space-x-2">
-              <SkillLevel skillLevel={skillset.level} />
-              <span>{skillset.level}</span>
-            </div>
-          </li>
-            // </div>
-          ))}
-          {/* Skills 1 ends */}
-        </ul>
+            {/* Skills 1 starts */}
+            {skill.map((skillset, i) => (
+              // <div key={i}>
+              <li className="flex justify-between">
+                <h4>{skillset.skill}</h4>{" "}
+                <div className="flex w-32 items-center space-x-2">
+                  <SkillLevel skillLevel={skillset.level} />
+                  <span>{skillset.level}</span>
+                </div>
+              </li>
+              // </div>
+            ))}
+            {/* Skills 1 ends */}
+          </ul>
         </div>
       </div>
       {/* Skills end */}

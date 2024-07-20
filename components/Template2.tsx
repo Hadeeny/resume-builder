@@ -1,23 +1,31 @@
-import { Info } from "../features/userInfoSlice";
-import { SkillType, eduType, ExperienceType } from "./Experience";
 import SkillLevel from "@/components/SkillLevel";
-import {useRef} from 'react'
+import { TemplateProps } from "@/types";
 
-interface Prop {
-  personalInfo: Info;
-  experience: ExperienceType[];
-  skill: SkillType[];
-  education: eduType[];
-  summary: string;
-  refs: any;
-} 
-
-const Template2 = ({personalInfo, summary, education, refs, skill, experience }:Prop) => {
-  const { firstName, lastName, email, title, linkedin, phone, address, github, website } =
-    personalInfo;
-    const componentRef= refs
+const Template2 = ({
+  personalInfo,
+  summary,
+  education,
+  refs,
+  skill,
+  experience,
+}: TemplateProps) => {
+  const {
+    firstName,
+    lastName,
+    email,
+    title,
+    linkedin,
+    phone,
+    address,
+    github,
+    website,
+  } = personalInfo;
+  const componentRef = refs;
   return (
-    <div ref={componentRef} className="w-full text-[12px] border border-b-transparent border-gray-200 mx-auto flex flex-col">
+    <div
+      ref={componentRef}
+      className="w-full text-[12px] border border-b-transparent border-gray-200 mx-auto flex flex-col"
+    >
       {/* Title starts */}
       <div className="bg-gray-800 text-white px-6 py-6" id="title">
         <h1 className="text-xl font-semibold">
@@ -115,35 +123,36 @@ const Template2 = ({personalInfo, summary, education, refs, skill, experience }:
             </div>
             {github && (
               <div>
-              <h4 className="font-semibold">Github:</h4>
-              <p>{github}</p>
-            </div>
-          )}
-          {website && (
+                <h4 className="font-semibold">Github:</h4>
+                <p>{github}</p>
+              </div>
+            )}
+            {website && (
               <h3>
-              Phone : <span>{website}</span>
-            </h3>
-          )}
+                Phone : <span>{website}</span>
+              </h3>
+            )}
           </div>
           {/* Skills and softwares */}
 
           <h3 className="text-lg font-semibold">Skills and software</h3>
           <div className="border-t space-y-2 border-gray-200 py-2">
-          <ul className="w-full space-y-0">
-          {/* Skills 1 starts */}
-          {skill.map((skillset, i) => (
-            // <div key={i}>
-            <li className="flex flex-col">
-                <h4>{skillset.skill}</h4>{""}
-                <div className="flex justify-end w-full flex-col items-end space-x-2">
+            <ul className="w-full space-y-0">
+              {/* Skills 1 starts */}
+              {skill.map((skillset, i) => (
+                // <div key={i}>
+                <li className="flex flex-col">
+                  <h4>{skillset.skill}</h4>
+                  {""}
+                  <div className="flex justify-end w-full flex-col items-end space-x-2">
                     <SkillLevel skillLevel={skillset.level} />
                     <span>{skillset.level}</span>
-                </div>
-            </li>
-            // </div>
-          ))}
-          {/* Skills 1 ends */}
-        </ul>
+                  </div>
+                </li>
+                // </div>
+              ))}
+              {/* Skills 1 ends */}
+            </ul>
           </div>
           {/* Skills and software ends */}
         </div>

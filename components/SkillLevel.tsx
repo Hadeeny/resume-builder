@@ -1,9 +1,6 @@
-interface Prop {
-    skillLevel: string
-}
-const SkillLevel = ({skillLevel}:Prop) => {
+const SkillLevel = ({ skillLevel }: { skillLevel: string }) => {
   const level = () => {
-      const value = skillLevel
+    const value = skillLevel;
     switch (value) {
       case "beginner":
         return (
@@ -44,13 +41,13 @@ const SkillLevel = ({skillLevel}:Prop) => {
 
       default:
         return (
-            <>
-              <div className="p-1 bg-gray-700"></div>
-              <div className="p-1 bg-gray-300"></div>
-              <div className="p-1 bg-gray-300"></div>
-              <div className="p-1 bg-gray-300"></div>
-            </>
-          );
+          <>
+            <div className="p-1 bg-gray-700"></div>
+            <div className="p-1 bg-gray-300"></div>
+            <div className="p-1 bg-gray-300"></div>
+            <div className="p-1 bg-gray-300"></div>
+          </>
+        );
     }
   };
   return <div className="flex space-x-2">{level()}</div>;

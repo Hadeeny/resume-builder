@@ -1,22 +1,21 @@
-"use client"
-import React, { useRef } from 'react';
+"use client";
+import React, { useRef } from "react";
 import { templates } from "../templates";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import {Info} from '../features/userInfoSlice'
-import {useReactToPrint} from 'react-to-print'
+import { Info } from "../features/userInfoSlice";
+import { useReactToPrint } from "react-to-print";
+import { ResumePreviewProps } from "../types";
 
-interface Prop {
-  id: number;
-  personalInfo?: Info
-}
-const PreviewResume = ({ id }: Prop) => {
+const PreviewResume = ({ id }: ResumePreviewProps) => {
   const componentRef = useRef(null);
-  const { storeInfo, skill, summary, education, experience } = useSelector((state: RootState) => state.userInfo);
+  const { storeInfo, skill, summary, education, experience } = useSelector(
+    (state: RootState) => state.userInfo
+  );
   const download = useReactToPrint({
     content: () => componentRef.current,
-  }); 
+  });
 
   return (
     <div className="w-11/12 pb-8 mx-auto">
@@ -28,14 +27,17 @@ const PreviewResume = ({ id }: Prop) => {
           {/* Injected Resume */}
           {templates.map((temp, i) => {
             return (
-              temp.id == id && <temp.temp  
-              personalInfo={storeInfo} 
-              education={education}
-              experience= {experience}
-              skill = {skill}
-              summary={summary}
-              refs={componentRef}
-              key={i} />
+              temp.id == id && (
+                <temp.temp
+                  personalInfo={storeInfo}
+                  education={education}
+                  experience={experience}
+                  skill={skill}
+                  summary={summary}
+                  refs={componentRef}
+                  key={i}
+                />
+              )
             );
           })}
           {/* Injected Resume preview */}
@@ -47,12 +49,18 @@ const PreviewResume = ({ id }: Prop) => {
           <p className="text-black/50 text-md font-medium text-center">
             Download it or customize it more
           </p>
-         
-            <button onClick={download} className="text-white text-lg bg-vert font-medium my-4 py-3 w-full rounded-md">
+
+          <button
+            onClick={download}
+            className="text-white text-lg bg-vert font-medium my-4 py-3 w-full rounded-md"
+          >
             Download
           </button>
 
-          <button onClick={download} className="text-vert text-lg bg-transparent border border-vert font-medium my-1 py-3 w-full rounded-md">
+          <button
+            onClick={download}
+            className="text-vert text-lg bg-transparent border border-vert font-medium my-1 py-3 w-full rounded-md"
+          >
             Print
           </button>
         </div>

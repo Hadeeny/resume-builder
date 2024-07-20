@@ -1,71 +1,57 @@
 "use client";
-import {useRouter} from 'next/navigation'
+import { useRouter } from "next/navigation";
 import React, { useState, useRef } from "react";
-import {useSelector} from 'react-redux'
+import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import Image from "next/image";
 import Link from "next/link";
 import cvhero from "../assets/cvhero.svg";
-import {useDispatch} from 'react-redux'
-import {AppDispatch} from '../store'
-import {getEducation, addStoreExperience, addStoreEducation, addStoreSkill, getExperience, getSkills, getSummary} from '../features/userInfoSlice'
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store";
+import {
+  getEducation,
+  addStoreExperience,
+  addStoreEducation,
+  addStoreSkill,
+  getExperience,
+  getSkills,
+  getSummary,
+} from "../features/userInfoSlice";
 import { title } from "process";
-interface Prop {
-  id: number;
-}
 
-interface expInfo {
-  summary: string;
-}
-export interface ExperienceType {
-  id?: number;
-  title?: string;
-  city?: string;
-  company?: string;
-  description?: string;
-  from?: string;
-  to?: string;
-}
+import { ExperienceType, SkillType, eduType } from "../types";
 
-export interface SkillType {
-  skill: string;
-  level: string;
-  id: number;
-}
-export interface eduType {
-  id: number;
-  specialization: string;
-  school: string;
-  from: string;
-  to: string;
-  description: string;
-}
+const Experience = ({ id }: { id: number }) => {
+  const {
+    education: storeEducation,
+    skill: storeSkill,
+    summary: storeSummary,
+    experience: storeExperience,
+  } = useSelector((state: RootState) => state.userInfo);
 
-const Experience = ({ id }: Prop) => {
-
-  const { education:storeEducation, skill:storeSkill, summary:storeSummary, experience:storeExperience  } = useSelector((state: RootState) => state.userInfo);
-  
-  const router = useRouter()
+  const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
 
-  const [experience, setExperience] = useState<ExperienceType[]>(storeExperience);
+  const [experience, setExperience] =
+    useState<ExperienceType[]>(storeExperience);
 
-  
   const [education, setEducation] = useState<eduType[]>(storeEducation);
   // const [expCount, setExpCount] = useState(1)
-  const [summary, setSummary] = useState<string>(storeSummary)
+  const [summary, setSummary] = useState<string>(storeSummary);
 
   const [skills, setSkills] = useState<SkillType[]>(storeSkill);
   // console.log(workExperience)
-  const addExperience = (e:React.FormEvent) => {
+  const addExperience = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(addStoreExperience({
-      id: experience.length + 1,
-      title: "",
-      city: "",
-      company: "",
-      description: "",
-    }))
+    dispatch(
+      addStoreExperience({
+        id: experience.length + 1,
+        title: "",
+        city: "",
+        company: "",
+        description: "",
+      })
+    );
     setExperience([
       ...experience,
       {
@@ -78,16 +64,18 @@ const Experience = ({ id }: Prop) => {
     ]);
     // setExpCount(expCount + 1)
   };
-  const addEducation = (e:React.FormEvent) => {
+  const addEducation = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(addStoreEducation({
-      id: education.length + 1,
-      specialization: "",
-      school: "",
-      description: "",
-      to: '',
-      from: ''
-    }))
+    dispatch(
+      addStoreEducation({
+        id: education.length + 1,
+        specialization: "",
+        school: "",
+        description: "",
+        to: "",
+        from: "",
+      })
+    );
     setEducation([
       ...education,
       {
@@ -95,21 +83,23 @@ const Experience = ({ id }: Prop) => {
         specialization: "",
         school: "",
         description: "",
-        to: '',
-        from: ''
+        to: "",
+        from: "",
       },
     ]);
     // setExpCount(expCount + 1)
   };
 
-  const focusRef = useRef<HTMLInputElement>(null)
-  const addSkill = (e:React.FormEvent) => {
+  const focusRef = useRef<HTMLInputElement>(null);
+  const addSkill = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(addStoreSkill({
-      id: skills.length + 1,
-      level: "",
-      skill: "",
-    }))
+    dispatch(
+      addStoreSkill({
+        id: skills.length + 1,
+        level: "",
+        skill: "",
+      })
+    );
     setSkills([
       ...skills,
       {
@@ -118,72 +108,97 @@ const Experience = ({ id }: Prop) => {
         skill: "",
       },
     ]);
-    focusRef.current?.focus()
+    focusRef.current?.focus();
   };
 
- 
-  const updateFieldChanged = (exp:ExperienceType, index: number) => 
-  (e:React.FormEvent<HTMLInputElement>) => {
-    let newArr = [...experience]; 
-    newArr[index] = { ...exp, [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement).value }; 
-    setExperience(newArr);
-  };
+  const updateFieldChanged =
+    (exp: ExperienceType, index: number) =>
+    (e: React.FormEvent<HTMLInputElement>) => {
+      let newArr = [...experience];
+      newArr[index] = {
+        ...exp,
+        [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement)
+          .value,
+      };
+      setExperience(newArr);
+    };
 
-  const updateFieldChangedTextArea = (exp:ExperienceType, index: number) => 
-  (e:React.FormEvent<HTMLTextAreaElement>) => {
-    
-    let newArr = [...experience];
-    newArr[index] = { ...exp, [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement).value }; // replace e.target.value with whatever you want to change it to
-  
-    setExperience(newArr);
-  };
-  const updateFieldEducation = (edu:eduType, index: number) => 
-  (e:React.FormEvent<HTMLInputElement>) => {
-    let newEdu = [...education]; 
-    newEdu[index] = { ...edu, [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement).value }; // replace e.target.value with whatever you want to change it to
-   
-    setEducation(newEdu);
-  };
+  const updateFieldChangedTextArea =
+    (exp: ExperienceType, index: number) =>
+    (e: React.FormEvent<HTMLTextAreaElement>) => {
+      let newArr = [...experience];
+      newArr[index] = {
+        ...exp,
+        [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement)
+          .value,
+      }; // replace e.target.value with whatever you want to change it to
 
-  const updateFieldEducationTextArea = (edu:eduType, index: number) => 
-  (e:React.FormEvent<HTMLTextAreaElement>) => {
-    let newEdu = [...education]; 
-    newEdu[index] = { ...edu, [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement).value }; // replace e.target.value with whatever you want to change it to
-   
-    setEducation(newEdu);
-    // console.log(education);
-  };
+      setExperience(newArr);
+    };
+  const updateFieldEducation =
+    (edu: eduType, index: number) => (e: React.FormEvent<HTMLInputElement>) => {
+      let newEdu = [...education];
+      newEdu[index] = {
+        ...edu,
+        [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement)
+          .value,
+      }; // replace e.target.value with whatever you want to change it to
 
-  const updateFieldSkills = (skill:SkillType, index: number) => 
-  (e:React.FormEvent<HTMLInputElement>):void => {
-    // console.log('index: ' + index);
-    // console.log('property name: '+ e.target.name);
-    let newSkill = [...skills]; // copying the old datas array
-    // a deep copy is not needed as we are overriding the whole object below, and not setting a property of it. this does not mutate the state.
-    newSkill[index] = { ...skill, [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement).value }; // replace e.target.value with whatever you want to change it to
-    // console.log(newArr)
-    setSkills(newSkill);
-  };
-  const updateFieldLevel = (skill:SkillType, index: number) => 
-  (e:React.FormEvent<HTMLSelectElement>):void => {
-    let newSkill = [...skills]; // copying the old datas array
-    // a deep copy is not needed as we are overriding the whole object below, and not setting a property of it. this does not mutate the state.
-    newSkill[index] = { ...skill, [(e.target as HTMLSelectElement).name]: (e.target as HTMLSelectElement).value }; // replace e.target.value with whatever you want to change it to
-    // console.log(newArr)
-    setSkills(newSkill);
-  };
+      setEducation(newEdu);
+    };
 
+  const updateFieldEducationTextArea =
+    (edu: eduType, index: number) =>
+    (e: React.FormEvent<HTMLTextAreaElement>) => {
+      let newEdu = [...education];
+      newEdu[index] = {
+        ...edu,
+        [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement)
+          .value,
+      }; // replace e.target.value with whatever you want to change it to
 
-  const experienceHandler = (e:React.FormEvent)=>{
-    e.preventDefault()
-    dispatch(getExperience(experience))
-    dispatch(getEducation(education))
-    dispatch(getSkills(skills))
-    dispatch(getSummary(summary))
-    router.push(`/template/${id}/preview`)
-  }
+      setEducation(newEdu);
+      // console.log(education);
+    };
+
+  const updateFieldSkills =
+    (skill: SkillType, index: number) =>
+    (e: React.FormEvent<HTMLInputElement>): void => {
+      // console.log('index: ' + index);
+      // console.log('property name: '+ e.target.name);
+      let newSkill = [...skills]; // copying the old datas array
+      // a deep copy is not needed as we are overriding the whole object below, and not setting a property of it. this does not mutate the state.
+      newSkill[index] = {
+        ...skill,
+        [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement)
+          .value,
+      }; // replace e.target.value with whatever you want to change it to
+      // console.log(newArr)
+      setSkills(newSkill);
+    };
+  const updateFieldLevel =
+    (skill: SkillType, index: number) =>
+    (e: React.FormEvent<HTMLSelectElement>): void => {
+      let newSkill = [...skills]; // copying the old datas array
+      // a deep copy is not needed as we are overriding the whole object below, and not setting a property of it. this does not mutate the state.
+      newSkill[index] = {
+        ...skill,
+        [(e.target as HTMLSelectElement).name]: (e.target as HTMLSelectElement)
+          .value,
+      }; // replace e.target.value with whatever you want to change it to
+      // console.log(newArr)
+      setSkills(newSkill);
+    };
+
+  const experienceHandler = (e: React.FormEvent) => {
+    e.preventDefault();
+    dispatch(getExperience(experience));
+    dispatch(getEducation(education));
+    dispatch(getSkills(skills));
+    dispatch(getSummary(summary));
+    router.push(`/template/${id}/preview`);
+  };
   // console.log(expAr);
-  
 
   return (
     <div className="w-11/12 pb-8 mx-auto">
@@ -207,12 +222,14 @@ const Experience = ({ id }: Prop) => {
             //   setExperienceInfo({ ...experienceInfo, summary: e.target.value });
             // }}
             value={summary}
-            name='summary'
-            onChange= {e=>{setSummary(e.target.value)}}
+            name="summary"
+            onChange={(e) => {
+              setSummary(e.target.value);
+            }}
             placeholder="write here"
             className="w-full h-[10rem] p-2 outline-none rounded-md border border-gray-300"
           ></textarea>
-          
+
           {experience.map((exp, i) => (
             <div key={i}>
               <div className="border-t  mt-4 py-2 border-gray-300">
@@ -223,7 +240,6 @@ const Experience = ({ id }: Prop) => {
                   Add the jobs or positions you have held. In the description
                   talk about your best achievements and the tasks you were
                   doing.
-                  
                 </p>
               </div>
               <div className="flex border-t border-gray-300 flex-col md:space-x-4 items-center md:flex-row">
@@ -293,9 +309,15 @@ const Experience = ({ id }: Prop) => {
                   <label className="float-label">To</label>
                 </div>
               </div>
-              <div className='text-gray-500 pt-6'>To create bullet points, add each description on a new line by pressing the <span className='p-1 font-bold border rounded-md border-gray-300'>Enter</span> key </div>
+              <div className="text-gray-500 pt-6">
+                To create bullet points, add each description on a new line by
+                pressing the{" "}
+                <span className="p-1 font-bold border rounded-md border-gray-300">
+                  Enter
+                </span>{" "}
+                key{" "}
+              </div>
               <div className="relative my-5">
-             
                 <label className="float-label">Description</label>
                 <textarea
                   name="description"
@@ -307,10 +329,7 @@ const Experience = ({ id }: Prop) => {
               </div>
             </div>
           ))}
-          <button
-            onClick={addExperience}
-            className="text-vert font-semibold"
-          >
+          <button onClick={addExperience} className="text-vert font-semibold">
             Add more experience +
           </button>
 
@@ -392,26 +411,21 @@ const Experience = ({ id }: Prop) => {
             </div>
           ))}
 
-          <button
-            onClick={addEducation}
-            className="text-vert font-semibold"
-          >
+          <button onClick={addEducation} className="text-vert font-semibold">
             Add more education +
           </button>
 
           {/* Skills start */}
           <div className="border-y mt-8 py-2 border-gray-300">
-                <div className="text-xl pt-4 font-semibold">Skills</div>
-                <p className="text-sm py-6 text-black/50">
-                  Show your relevant experience (last 10 years). Use bullet
-                  points to note your achievements, if possible - use
-                  numbers/facts (Achieved X, measured by Y, by doing Z).
-                </p>
-              </div>
+            <div className="text-xl pt-4 font-semibold">Skills</div>
+            <p className="text-sm py-6 text-black/50">
+              Show your relevant experience (last 10 years). Use bullet points
+              to note your achievements, if possible - use numbers/facts
+              (Achieved X, measured by Y, by doing Z).
+            </p>
+          </div>
           {skills.map((skill, i) => (
             <div key={i}>
-              
-
               <div className="flex flex-col md:space-x-4 items-center md:flex-row">
                 <div className="relative w-full mt-5">
                   <input
@@ -430,21 +444,24 @@ const Experience = ({ id }: Prop) => {
                 <div className="relative w-full mt-5">
                   <label className="float-label">Level</label>
 
-                  <select value={skill.level} className="float-input" onChange={updateFieldLevel(skill, i)} name="level" id="level">
+                  <select
+                    value={skill.level}
+                    className="float-input"
+                    onChange={updateFieldLevel(skill, i)}
+                    name="level"
+                    id="level"
+                  >
                     <option value="">Select skill level</option>
                     <option value="beginner">Beginner</option>
                     <option value="good">Good</option>
                     <option value="intermediate">Intermediate</option>
-                    <option value="advanced">Advanced</option> 
+                    <option value="advanced">Advanced</option>
                   </select>
                 </div>
               </div>
             </div>
           ))}
-          <button
-            onClick={addSkill}
-            className="text-vert mt-4 font-semibold"
-          >
+          <button onClick={addSkill} className="text-vert mt-4 font-semibold">
             Add more skills +
           </button>
           {/* skills end */}
@@ -476,9 +493,12 @@ const Experience = ({ id }: Prop) => {
           </button>
         </Link>
         {/* <Link href={`/template/${id}/preview`}> */}
-          <button onClick={experienceHandler} className="bg-vert rounded-md font-semibold text-lg text-white w-full md:w-[14rem] h-14">
-            Save and Continue
-          </button>
+        <button
+          onClick={experienceHandler}
+          className="bg-vert rounded-md font-semibold text-lg text-white w-full md:w-[14rem] h-14"
+        >
+          Save and Continue
+        </button>
         {/* </Link> */}
       </div>
     </div>
